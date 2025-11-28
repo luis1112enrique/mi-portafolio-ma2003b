@@ -17,7 +17,7 @@ Repositorio profesional que integra los tres análisis multivariados desarrollad
 ## 👥 Equipo
 - **Luis Enrique Hernández Torres** — A01662166  
 - **Víctor Ángel Martínez Vidaurri**  
-- **Alejandro Martínez Ochoa**  
+- **Alejandro Martínez Ochoa** - A01657661
 *(Opcional)*: Enlaces a perfiles de LinkedIn
 
 ## 📚 Tabla de Contenidos
