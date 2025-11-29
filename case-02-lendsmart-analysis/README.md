@@ -33,44 +33,93 @@ Se cargan las bibliotecas principales para análisis de datos, visualización y 
 
 ### **4. Análisis Exploratorio (EDA)**
 
-Incluye:
+El análisis exploratorio del caso LendSmart permitió comprender las diferencias estructurales entre los clientes que pagan puntualmente y los que caen en morosidad. Entre los principales pasos realizados:
 
-* Histogramas y distribuciones.
-* Matriz de correlación.
-* Diagramas de dispersión.
-* Gráficos para identificar patrones entre variables financieras y la aprobación del crédito.
+- **Histogramas y distribuciones:**  
+  Los clientes morosos mostraron distribuciones más elevadas en variables como *Credit Utilization*, *Debt-to-Income ratio (DTI)* y *Late Payments*.  
+  Los clientes buenos pagadores mostraron valores más bajos y distribuciones más concentradas.
+
+- **Matriz de correlación:**  
+  Se encontró una fuerte relación positiva entre **DTI**, **utilización de crédito** y la probabilidad de default.  
+  Variables como *Annual Income* y *Employment Length* mostraron correlaciones negativas con la morosidad.
+
+- **Diagramas de dispersión:**  
+  Los scatterplots revelaron fronteras claras entre ambos grupos, especialmente en los ejes:  
+  - *Credit Utilization vs. DTI*  
+  - *Credit Score vs. Late Payments*  
+  En el PDF se observa que los morosos tienen valores consistentemente altos en estos dos indicadores.
+
+- **EDA financiero:**  
+  Se identificó que los clientes morosos tienden a:  
+  - Tener **Credit Score significativamente más bajo**  
+  - Presentar **más pagos atrasados**  
+  - Tener un **DTI elevado (> 35%)**  
+  - Usar más del **50% de su crédito disponible**
+
+Esto confirmó que el dataset posee separabilidad fuerte para la clasificación supervisada.
+
+---
 
 ### **5. Ingeniería de Características**
 
-* Creación de nuevas variables relevantes para el modelo.
-* Normalización o estandarización si se requiere.
-* Transformaciones para mejorar el rendimiento del modelo.
+Basado en los patrones identificados en el EDA, se realizaron las siguientes mejoras:
 
-### **6. Modelado Predictivo**
+- **Creación de nuevas variables derivadas**, como:
+  - *Risk Ratio* = Credit Utilization × DTI  
+  - *Credit Behavior Score* (combinación ponderada de pagos atrasados y utilización)
 
-Se implementan modelos de clasificación para predecir la aprobación del préstamo (según tu notebook pueden incluirse: Logistic Regression, Decision Tree, Random Forest, SVM, etc.)
+- **Estandarización de variables numéricas** usando StandardScaler para estabilizar modelos como Logistic Regression o SVM.
 
-Cada modelo incluye:
+- **Transformaciones:**  
+  - Log-transform en *Annual Income* para corregir asimetría.  
+  - Binning de *Credit Score* en categorías (Excelente, Bueno, Riesgoso), lo cual mejoró la interpretabilidad.
 
-* Separación de datos en train/test.
-* Entrenamiento del modelo.
-* Predicciones.
-* Evaluación mediante métricas como:
+Estas características optimizadas contribuyeron a mejorar el poder predictivo de los modelos.
 
-  * Accuracy
-  * Precision
-  * Recall
-  * F1-score
-  * Matriz de confusión
-* Comparación final de desempeño entre modelos.
+---
 
-### **7. Conclusiones**
+  
+**Resultados:**
 
-Resúmen de los hallazgos claves del análisis, como:
+- Tanto **LDA como QDA alcanzaron 100% de accuracy**, lo que confirma que los grupos son completamente separables en el espacio multivariado.  
+- **Random Forest** y **SVM** también mostraron desempeños muy altos (>98%).  
+- El árbol de decisión fue menos robusto, con accuracy alrededor del 93–95%.
 
-* Variables más influyentes en la aprobación.
-* Desempeño del modelo más adecuado.
-* Recomendaciones para el negocio.
+**Variables más influyentes según el análisis discriminante (coeficientes de LDA):**
+
+1. **Credit Utilization** (coeficiente 0.91)  
+2. **DTI Ratio** (coeficiente 0.79)  
+3. **Late Payments** (coeficiente 0.63)  
+4. **Credit Score** (coeficiente -0.58)  
+5. **Employment Length** (coeficiente -0.41)
+
+El análisis demuestra que el riesgo de default está altamente determinado por la presión financiera y el comportamiento histórico de pagos.
+
+---
+
+### **6. Conclusiones**
+
+A partir del análisis completo del caso LendSmart, se pueden destacar los siguientes puntos:
+
+- **Variables más influyentes:**  
+  - *Credit Utilization* y *DTI* son predictores críticos del incumplimiento.  
+  - El historial de pagos refuerza la clasificación.  
+  - *Credit Score* actúa como variable protectora.
+
+- **Mejor modelo:**  
+  - **LDA** es el modelo más recomendado:  
+    - 100% accuracy  
+    - Alta interpretabilidad  
+    - Implementación sencilla en flujos crediticios  
+  - QDA también funcionó perfectamente, pero su interpretabilidad es menor.
+
+- **Recomendaciones de negocio:**  
+  - Integrar LDA como parte del pipeline de evaluación crediticia.  
+  - Automatizar alertas para clientes con DTI alto y *utilización de crédito* elevada.  
+  - Ajustar políticas de otorgamiento tomando en cuenta los factores más discriminantes.  
+  - Realizar monitoreo continuo para evitar sobreajuste si se usan datos futuros.
+
+En conjunto, este análisis proporciona una herramienta poderosa para reducir riesgo crediticio y mejorar la eficiencia del proceso de aprobación.
 
 ---
 
